@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="mx.txt" />
+    <Text Include="mx2.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h" />
