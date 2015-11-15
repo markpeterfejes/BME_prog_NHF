@@ -8,5 +8,6 @@ int main(void) {
 
 	Matrix* matrix1 = readMatrixFromFile("mx.txt", ' ', '\n');
 
+	free(matrix1);
 	return 0;
 }
