@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Matrix* readMatrixFromFile(char* fileName, char columnSeparator, char rowSeparator) {
+Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char const rowSeparator) {
 
 	Matrix* newMatrix = (Matrix*)malloc(sizeof(Matrix));
 
@@ -21,10 +21,10 @@ Matrix* readMatrixFromFile(char* fileName, char columnSeparator, char rowSeparat
 		if (feof(fp)) {
 			break;
 		}
-		if (c == columnSeparator && newMatrix->rowCount == 0) {
+		if (columnSeparator == c && 0 == newMatrix->rowCount) {
 			newMatrix->columnCount++;
 		}
-		if (c == rowSeparator) {
+		if (rowSeparator == c) {
 			newMatrix->rowCount++;
 		}
 
@@ -33,12 +33,14 @@ Matrix* readMatrixFromFile(char* fileName, char columnSeparator, char rowSeparat
 	newMatrix->rowCount++;
 
 	newMatrix->data = allocateNewMatrixData(newMatrix->rowCount, newMatrix->columnCount);
+
+
 	return newMatrix;
 }
 
 double** allocateNewMatrixData(int rowCount, int columnCount) {
 	int i;
-	double** data = (double**)malloc(columnCount*sizeof(double));
+	double** data = (double**)malloc(columnCount*sizeof(double*));
 	for (i = 0; i < rowCount; i++) {
 		data[i] = (double*)malloc(sizeof(double));
 	}
