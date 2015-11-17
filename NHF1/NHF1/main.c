@@ -7,7 +7,7 @@
 int main(void) {
 
 
-	Matrix* matrix1 = readMatrixFromFile("mx.txt", ' ', '\n');
+	Matrix* matrix1 = readMatrixFromFile("mx.txt", ' ', '\n'); // Initialize matrix, allocate memory based on the file given.
 
 	freeMatrix(matrix1);
 	return 0;

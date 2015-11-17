@@ -3,7 +3,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char const rowSeparator) {
+Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, const char rowSeparator) {
 
 	Matrix* newMatrix = (Matrix*)malloc(sizeof(Matrix));
 	unsigned int maxDecimals = 0;
@@ -42,7 +42,6 @@ Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char cons
 	newMatrix->columnCount++;
 	newMatrix->rowCount++;
 	newMatrix->data = allocateNewMatrixData(newMatrix->rowCount, newMatrix->columnCount);
-//	debugmalloc_dump();
 
 	char* tempDecimalHolder = (char*)malloc(maxDecimals * sizeof(char));
 	decimalCounter = 0;
@@ -71,7 +70,7 @@ Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char cons
 	tempDecimalHolder[decimalCounter] = '\0';
 	newMatrix->data[i][j] = atof(tempDecimalHolder);
 
-	//printf("%g\n", newMatrix->data[2][3]);
+	printf("Test:\nValue in (3,4): %g\n", newMatrix->data[2][3]);
 
 	free(tempDecimalHolder);
 	fclose(fp);
