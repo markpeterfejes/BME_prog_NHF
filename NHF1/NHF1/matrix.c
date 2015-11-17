@@ -77,7 +77,7 @@ Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, con
 	return newMatrix;
 }
 
-double** allocateNewMatrixData(int rowCount, int columnCount) {
+static double** allocateNewMatrixData(int rowCount, int columnCount) {
 	int i;
 	double** data = (double**)malloc(rowCount*sizeof(double*));
 	for (i = 0; i < rowCount; i++) {
@@ -94,4 +94,19 @@ void freeMatrix(Matrix* matrixToDelete) {
 	}
 	free(matrixToDelete->data);
 	free(matrixToDelete);
+}
+
+void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, const char rowSeparator) {
+	int i, j;
+	for (i = 0; i < matrixToPrint->rowCount; i++) {
+		for (j = 0; j < matrixToPrint->columnCount; j++) {
+			if (matrixToPrint->columnCount == j) {
+				printf("%g", matrixToPrint->data[i][j]);
+			}
+			else {
+				printf("%g%c", matrixToPrint->data[i][j], columnSeparator);
+			}
+		}
+		printf("%c", rowSeparator);
+	}
 }

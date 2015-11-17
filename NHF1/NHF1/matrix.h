@@ -11,6 +11,7 @@ typedef struct matrix {
 }Matrix;
 
 Matrix* readMatrixFromFile(char* fileName, char columnSeparator, char rowSeparator);
-double** allocateNewMatrixData(int rowCount, int columnCount);
+static double** allocateNewMatrixData(int rowCount, int columnCount);
+void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, const char rowSeparator);
 
 #endif

@@ -9,6 +9,8 @@ int main(void) {
 
 	Matrix* matrix1 = readMatrixFromFile("mx.txt", ' ', '\n'); // Initialize matrix, allocate memory based on the file given.
 
+	printMatrixValues(matrix1, '\t', '\n');
+
 	freeMatrix(matrix1);
 	return 0;
 }
