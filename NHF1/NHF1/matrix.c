@@ -107,6 +107,9 @@ void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, 
 				printf("%g%c", matrixToPrint->data[i][j], columnSeparator);
 			}
 		}
-		printf("%c", rowSeparator);
+		if ((matrixToPrint->rowCount - 1) > i) {
+			printf("%c", rowSeparator);
+		}
 	}
+	printf("\n");
 }
