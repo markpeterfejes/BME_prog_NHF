@@ -1,10 +1,11 @@
 #include "matrix.h"
+//#include "debugmalloc.h"
 #define _CRT_SECURE_NO_WARNINGS
 
 
 Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char const rowSeparator) {
 
-	Matrix* newMatrix = (Matrix*)malloc (sizeof(Matrix));
+	Matrix* newMatrix = (Matrix*)malloc(sizeof(Matrix));
 	unsigned int maxDecimals = 0;
 	unsigned int decimalCounter = 0;
 	FILE *fp;
@@ -15,7 +16,7 @@ Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char cons
 	}
 	newMatrix->columnCount = 0;
 	newMatrix->rowCount = 0;
-	
+
 	do
 	{
 		char c = fgetc(fp);
@@ -40,9 +41,10 @@ Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char cons
 
 	newMatrix->columnCount++;
 	newMatrix->rowCount++;
-	newMatrix->data = allocateNewMatrixData (newMatrix->rowCount, newMatrix->columnCount);
+	newMatrix->data = allocateNewMatrixData(newMatrix->rowCount, newMatrix->columnCount);
+//	debugmalloc_dump();
 
-	char* tempDecimalHolder = (char*)malloc (maxDecimals * sizeof(char));
+	char* tempDecimalHolder = (char*)malloc(maxDecimals * sizeof(char));
 	decimalCounter = 0;
 	int i = 0; int j = 0;
 	do
@@ -78,11 +80,19 @@ Matrix* readMatrixFromFile(char* fileName, char const columnSeparator, char cons
 
 double** allocateNewMatrixData(int rowCount, int columnCount) {
 	int i;
-	double** data = (double**)malloc(columnCount*sizeof(double*));
+	double** data = (double**)malloc(rowCount*sizeof(double*));
 	for (i = 0; i < rowCount; i++) {
-		data[i] = (double*)malloc(sizeof(double));
+		data[i] = (double*)malloc(columnCount*sizeof(double));
 	}
 
 	return data;
 }
 
+void freeMatrix(Matrix* matrixToDelete) {
+	int i;
+	for (i = 0; i < matrixToDelete->rowCount; i++) {
+		free(matrixToDelete->data[i]);
+	}
+	free(matrixToDelete->data);
+	free(matrixToDelete);
+}

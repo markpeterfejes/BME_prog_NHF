@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="debugmalloc.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="matrix.c" />
   </ItemGroup>
@@ -150,6 +151,7 @@
     <Text Include="mx2.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="debugmalloc.h" />
     <ClInclude Include="matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
