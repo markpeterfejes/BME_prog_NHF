@@ -4,6 +4,8 @@
 #include "matrix.h"
 #define _CRT_SECURE_NO_WARNINGS
 
+void clearConsole();
+
 int main(void) {
 
 
@@ -13,4 +15,15 @@ int main(void) {
 
 	freeMatrix(matrix1);
 	return 0;
+}
+
+
+void clearConsole() {
+#ifdef _WIN32
+	system("cls");
+#endif
+#ifdef __unix__
+	system("clear");
+#endif
+
 }

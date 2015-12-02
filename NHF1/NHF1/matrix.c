@@ -23,7 +23,7 @@ Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, con
 		if (feof(fp)) {
 			break;
 		}
-		decimalCounter++; // conviniently this will stop at the size of the input's maximum decimals + 1 :) https://www.youtube.com/watch?v=yG0oBPtyNb0
+		decimalCounter++; // conviniently this will stop at the size of the input's maximum decimals + 1 :) 
 		if (columnSeparator == c && 0 == newMatrix->rowCount) {
 			newMatrix->columnCount++;
 		}
@@ -113,3 +113,4 @@ void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, 
 	}
 	printf("\n");
 }
+
