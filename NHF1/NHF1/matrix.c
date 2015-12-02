@@ -3,15 +3,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, const char rowSeparator) {
+Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, const char rowSeparator, const char* matrixName) {
 
 	Matrix* newMatrix = (Matrix*)malloc(sizeof(Matrix));
 	unsigned int maxDecimals = 0;
 	unsigned int decimalCounter = 0;
 	FILE *fp;
+	strcpy(newMatrix->name, matrixName);
 	fp = fopen(fileName, "rt");
 	if (fp == NULL) {
-		perror("Error opening file");
+		perror("\nError opening file");
 		return(-1);
 	}
 	newMatrix->columnCount = 0;
