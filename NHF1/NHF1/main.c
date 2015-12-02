@@ -3,13 +3,15 @@
 //#include "debugmalloc.h"
 #include "matrix.h"
 #define _CRT_SECURE_NO_WARNINGS
-#define MAX_MATRIXES 20
+#define MAX_MATRICES 20
 
 void clearConsole();
 void showMenu(void);
 void addNewMatrix(void);
-Matrix* openMatrixes[MAX_MATRIXES] = { NULL }; // Maximum matrixes that the program will store
-int		openMatrixCount = 0;				   // Matrixes currently open
+void listMatrices(void);
+
+Matrix* openMatrices[MAX_MATRICES] = { NULL }; // Maximum matrices that the program will store
+int		openMatrixCount = 0;				   // Matrices currently open
 
 int main(void) {
 
@@ -37,9 +39,9 @@ void showMenu(void) {
 		clearConsole();
 
 		printf("1. Add new matrix\n");
-		printf("2. Add two matrixes\n");
-		printf("3. Multiply two matrixes\n");
-		printf("4. Currently added matrixes\n");
+		printf("2. Add two matrices\n");
+		printf("3. Multiply two matrices\n");
+		printf("4. Currently added matrices\n");
 		printf("5. Help\n");
 		printf("6. Exit\n");
 		printf("Select an option by entering it's number: ");
@@ -52,15 +54,15 @@ void showMenu(void) {
 			break;
 		case 2:
 			clearConsole();
-			//addMatrixes();
+			//addMatrices();
 			break;
 		case 3:
 			clearConsole();
-			//multiplyMatrixes();
+			//multiplyMatrices();
 			break;
 		case 4:
 			clearConsole();
-			//listMatrixes();
+			listMatrices();
 			break;
 		case 5:
 			clearConsole();
@@ -76,6 +78,13 @@ void showMenu(void) {
 }
 
 void addNewMatrix(void) {
+	if (openMatrixCount >= MAX_MATRICES) {
+		printf("Cannot add more matrices. Maximum matrix count reached(%d) Press enter to return to the menu\n", MAX_MATRICES);
+		getchar();
+		getchar();
+		return;
+	}
+
 	char name[51];
 	char path[101];
 	char columnSep;
@@ -90,7 +99,17 @@ void addNewMatrix(void) {
 	printf("\nCharacter separating the rows: ");
 	scanf("%c%*c", &rowSep);
 
-	openMatrixes[openMatrixCount] = readMatrixFromFile(path, columnSep, rowSep, name);
+	openMatrices[openMatrixCount++] = readMatrixFromFile(path, columnSep, rowSep, name);
 	printf("Matrix added. Press enter to return to the menu");
+	getchar();
+}
+
+void listMatrices(void) {
+	int i;
+
+	for (i = 0; i < openMatrixCount; i++) {
+		printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1,openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+	}
+	getchar();
 	getchar();
 }

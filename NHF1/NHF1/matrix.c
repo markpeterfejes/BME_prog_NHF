@@ -99,6 +99,12 @@ void freeMatrix(Matrix* matrixToDelete) {
 
 void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, const char rowSeparator) {
 	int i, j;
+
+	if (matrixToPrint->rowCount > 60 || matrixToPrint->columnCount > 30) {
+		printf("\nMatrix is too big to be shown here.\n");
+		return;
+	}
+
 	for (i = 0; i < matrixToPrint->rowCount; i++) {
 		for (j = 0; j < matrixToPrint->columnCount; j++) {
 			if (matrixToPrint->columnCount == j) {
