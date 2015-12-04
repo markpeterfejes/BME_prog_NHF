@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "debugmalloc.h"
+#include "debugmalloc.h"
 #include "matrix.h"
-#define _CRT_SECURE_NO_WARNINGS
 #define MAX_MATRICES 20
 
 void clearConsole();
 void showMenu(void);
 void addNewMatrix(void);
+void addMatrix(void);
 void listMatrices(void);
 void freeProgramMemory();
 
@@ -60,7 +60,7 @@ void showMenu(void)
 			break;
 		case 2:
 			clearConsole();
-			//addMatrices();
+			addMatrix();
 			break;
 		case 3:
 			clearConsole();
@@ -98,9 +98,9 @@ void addNewMatrix(void)
 	char columnSep;
 	char rowSep;
 	printf("-------Adding a new Matrix-------\n");
-	printf("Please enter the name of the new matrix (max 50 characters): ");
+	printf("Please enter the name of the new matrix (max 50 characters):\n");
 	scanf("%50s%*c", &name);
-	printf("\nPlease enter the path to the file containing the matrix (max 100 characters): ");
+	printf("\nPlease enter the path to the file containing the matrix (max 100 characters):\n");
 	scanf("%100s%*c", &path);
 	printf("\nCharacter separating the columns: ");
 	scanf("%c%*c", &columnSep);
@@ -109,7 +109,7 @@ void addNewMatrix(void)
 
 	openMatrices[openMatrixCount++] = readMatrixFromFile(path, columnSep, rowSep, name);
 	printf("Matrix added. Press enter to return to the menu");
-	getchar();
+	scanf("%*c");
 }
 
 void listMatrices(void)
@@ -119,7 +119,7 @@ void listMatrices(void)
 
 	if (openMatrixCount == 0)
 	{
-		printf("No open matrices found. Add some! Press 'Return' to go back to the menu\n");
+		printf("No open matrices found. Add some! Enter 0 to go back to the menu\n");
 		getchar();
 		return;
 	}
@@ -151,5 +151,46 @@ void freeProgramMemory()
 	for (i = 0; i < openMatrixCount; i++)
 	{
 		freeMatrix(openMatrices[i]);
+	}
+}
+void addMatrix(void)
+{
+	int i;
+	int tag1, tag2;
+	if (openMatrixCount <= 0)
+	{
+		printf("No open matrices found. Add some! Enter 0 to go back to the menu\n");
+		scanf("%*c");
+		return;
+	}
+	if (openMatrixCount >= MAX_MATRICES)
+	{
+		printf("Too many open matrices. Please restart the program.\n");
+		scanf("%*c");
+		return;
+	}
+
+	for (i = 0; i < openMatrixCount; i++)
+	{
+		printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1, openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+	}
+
+	printf("Select Two matrices to add together, by entering their number\n");
+	printf("First one: ");
+	scanf("%d%*c", &tag1);
+	printf("Second one: ");
+	scanf("%d%*c", &tag2);
+
+	if (tag1 > 0 && tag1 <= openMatrixCount && tag2 > 0 && tag2 <= openMatrixCount)
+	{
+		openMatrices[openMatrixCount] = addMatrices(openMatrices[tag1 - 1], openMatrices[tag2 - 1]);
+		if (openMatrices[openMatrixCount] == NULL)
+		{
+			printf("\n It would be good if the matrices would be the same sizes...\n");
+			return;
+		}
+		openMatrixCount++;
+		printf("\nIt can be found in the menu!\n");
+		scanf("%*c");
 	}
 }

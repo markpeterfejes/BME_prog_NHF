@@ -1,6 +1,5 @@
 #include "matrix.h"
-//#include "debugmalloc.h"
-#define _CRT_SECURE_NO_WARNINGS
+#include "debugmalloc.h"
 
 
 Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, const char rowSeparator, const char* matrixName)
@@ -146,11 +145,12 @@ Matrix* addMatrices(const Matrix * matrix1, const Matrix * matrix2)
 	if (matrix1->columnCount != matrix2->columnCount || matrix1->rowCount != matrix2->rowCount)
 		return NULL;
 	int i, j;
+	char newName[51] = "SumMatrix";
 	Matrix* sumMatrix = (Matrix*)malloc(sizeof(Matrix));
 	sumMatrix->columnCount = matrix1->columnCount;
 	sumMatrix->rowCount = matrix1->rowCount;
 	sumMatrix->data = allocateNewMatrixData(sumMatrix->rowCount, sumMatrix->columnCount);
-
+	strcpy(sumMatrix->name, newName);
 	for (i = 0; i < sumMatrix->rowCount; i++)
 	{
 		for (j = 0; j < sumMatrix->columnCount; j++)
