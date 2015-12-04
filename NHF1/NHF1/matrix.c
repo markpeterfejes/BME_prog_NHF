@@ -71,7 +71,7 @@ Matrix* readMatrixFromFile(const char* fileName, const char columnSeparator, con
 	tempDecimalHolder[decimalCounter] = '\0';
 	newMatrix->data[i][j] = atof(tempDecimalHolder);
 
-	printf("Test:\nValue in (3,4): %g\n", newMatrix->data[2][3]);
+	//printf("Test:\nValue in (3,4): %g\n", newMatrix->data[2][3]);
 
 	free(tempDecimalHolder);
 	fclose(fp);

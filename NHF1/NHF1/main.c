@@ -9,6 +9,7 @@ void clearConsole();
 void showMenu(void);
 void addNewMatrix(void);
 void listMatrices(void);
+void freeProgramMemory();
 
 Matrix* openMatrices[MAX_MATRICES] = { NULL }; // Maximum matrices that the program will store
 int		openMatrixCount = 0;				   // Matrices currently open
@@ -21,6 +22,7 @@ int main(void) {
 	//Matrix* matrix1 = readMatrixFromFile("mx.txt", ' ', '\n', "A"); // Initialize matrix, allocate memory based on the file given.
 	//printMatrixValues(matrix1, '\t', '\n');
 	//freeMatrix(matrix1);
+	freeProgramMemory();
 	return 0;
 }
 
@@ -45,7 +47,7 @@ void showMenu(void) {
 		printf("5. Help\n");
 		printf("6. Exit\n");
 		printf("Select an option by entering it's number: ");
-		scanf("%d", &option);
+		scanf("%d%*c", &option);
 		switch (option)
 		{
 		case 1:
@@ -106,10 +108,36 @@ void addNewMatrix(void) {
 
 void listMatrices(void) {
 	int i;
+	int option;
+
+	if (openMatrixCount == 0) {
+		printf("No open matrices found. Add some! Press 'Return' to go back to the menu\n");
+		getchar();
+		return;
+	}
+	while (1) {
+		clearConsole();
+		for (i = 0; i < openMatrixCount; i++) {
+			printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1, openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+		}
+		printf("\nSelect a matrix you want to see here, by entering it's number, or any other number to go back to the menu: ");
+		scanf("%d%*c", &option);
+		if (option > 0 && option <= openMatrixCount) {
+			printMatrixValues(openMatrices[option - 1], '\t', '\n');
+			getchar();
+			continue;
+		}
+		break;
+	}
+}
+
+void freeProgramMemory() {
+	int i;
+
+	if (openMatrixCount == 0)
+		return;
 
 	for (i = 0; i < openMatrixCount; i++) {
-		printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1,openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+		freeMatrix(openMatrices[i]);
 	}
-	getchar();
-	getchar();
 }
