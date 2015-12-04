@@ -14,7 +14,8 @@ void freeProgramMemory();
 Matrix* openMatrices[MAX_MATRICES] = { NULL }; // Maximum matrices that the program will store
 int		openMatrixCount = 0;				   // Matrices currently open
 
-int main(void) {
+int main(void)
+{
 
 	showMenu();
 
@@ -26,7 +27,8 @@ int main(void) {
 	return 0;
 }
 
-void clearConsole() {
+void clearConsole()
+{
 #ifdef _WIN32
 	system("cls");
 #endif
@@ -35,9 +37,11 @@ void clearConsole() {
 #endif
 }
 
-void showMenu(void) {
+void showMenu(void)
+{
 	int option;
-	while (1) {
+	while (1)
+	{
 		clearConsole();
 
 		printf("1. Add new matrix\n");
@@ -79,8 +83,10 @@ void showMenu(void) {
 	}
 }
 
-void addNewMatrix(void) {
-	if (openMatrixCount >= MAX_MATRICES) {
+void addNewMatrix(void)
+{
+	if (openMatrixCount >= MAX_MATRICES)
+	{
 		printf("Cannot add more matrices. Maximum matrix count reached(%d) Press enter to return to the menu\n", MAX_MATRICES);
 		getchar();
 		getchar();
@@ -106,23 +112,27 @@ void addNewMatrix(void) {
 	getchar();
 }
 
-void listMatrices(void) {
+void listMatrices(void)
+{
 	int i;
 	int option;
 
-	if (openMatrixCount == 0) {
+	if (openMatrixCount == 0)
+	{
 		printf("No open matrices found. Add some! Press 'Return' to go back to the menu\n");
 		getchar();
 		return;
 	}
-	while (1) {
-		clearConsole();
-		for (i = 0; i < openMatrixCount; i++) {
+	while (1)
+	{
+		for (i = 0; i < openMatrixCount; i++)
+		{
 			printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1, openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
 		}
-		printf("\nSelect a matrix you want to see here, by entering it's number, or any other number to go back to the menu: ");
+		printf("\nSelect a matrix you want to print, by entering it's number, or any other number to go back to the menu: ");
 		scanf("%d%*c", &option);
-		if (option > 0 && option <= openMatrixCount) {
+		if (option > 0 && option <= openMatrixCount)
+		{
 			printMatrixValues(openMatrices[option - 1], '\t', '\n');
 			getchar();
 			continue;
@@ -131,13 +141,15 @@ void listMatrices(void) {
 	}
 }
 
-void freeProgramMemory() {
+void freeProgramMemory()
+{
 	int i;
 
 	if (openMatrixCount == 0)
 		return;
 
-	for (i = 0; i < openMatrixCount; i++) {
+	for (i = 0; i < openMatrixCount; i++)
+	{
 		freeMatrix(openMatrices[i]);
 	}
 }
