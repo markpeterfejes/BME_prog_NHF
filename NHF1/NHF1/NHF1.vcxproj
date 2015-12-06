@@ -149,6 +149,7 @@
   <ItemGroup>
     <Text Include="mx.txt" />
     <Text Include="mx2.txt" />
+    <Text Include="mx3.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugmalloc.h" />

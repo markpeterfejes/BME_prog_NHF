@@ -123,7 +123,7 @@ void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, 
 	{
 		for (j = 0; j < matrixToPrint->columnCount; j++)
 		{
-			if (matrixToPrint->columnCount == j)
+			if (matrixToPrint->columnCount - 1 == j)
 			{
 				printf("%g", matrixToPrint->data[i][j]);
 			}
@@ -140,17 +140,16 @@ void printMatrixValues(const Matrix* matrixToPrint, const char columnSeparator, 
 	printf("\n");
 }
 
-Matrix* addMatrices(const Matrix * matrix1, const Matrix * matrix2)
+Matrix* addMatrices(const Matrix * matrix1, const Matrix * matrix2, const char* name)
 {
 	if (matrix1->columnCount != matrix2->columnCount || matrix1->rowCount != matrix2->rowCount)
 		return NULL;
 	int i, j;
-	char newName[51] = "SumMatrix";
 	Matrix* sumMatrix = (Matrix*)malloc(sizeof(Matrix));
 	sumMatrix->columnCount = matrix1->columnCount;
 	sumMatrix->rowCount = matrix1->rowCount;
 	sumMatrix->data = allocateNewMatrixData(sumMatrix->rowCount, sumMatrix->columnCount);
-	strcpy(sumMatrix->name, newName);
+	strcpy(sumMatrix->name, name);
 	for (i = 0; i < sumMatrix->rowCount; i++)
 	{
 		for (j = 0; j < sumMatrix->columnCount; j++)
@@ -160,4 +159,64 @@ Matrix* addMatrices(const Matrix * matrix1, const Matrix * matrix2)
 	}
 
 	return sumMatrix;
+}
+
+Matrix * multiplyMatrices(const Matrix * matrix1, const Matrix * matrix2, const char * name)
+{
+	if (matrix1->columnCount != matrix2->rowCount)
+		return NULL;
+	int i, j, k;
+	Matrix* productMatrix = (Matrix*)malloc(sizeof(Matrix));
+	productMatrix->columnCount = matrix2->columnCount;
+	productMatrix->rowCount = matrix1->rowCount;
+	productMatrix->data = allocateNewMatrixData(productMatrix->rowCount, productMatrix->columnCount);
+	strcpy(productMatrix->name, name);
+	nullifyMatrixData(productMatrix);
+	for (i = 0; i < matrix1->rowCount; i++)
+		for (j = 0; j < matrix2->columnCount; j++)
+			for (k = 0; k < matrix1->columnCount; k++)
+			{
+				productMatrix->data[i][j] += matrix1->data[i][k] * matrix2->data[k][j];
+			}
+
+	return productMatrix;
+}
+
+void nullifyMatrixData(Matrix * matrixToNullify)
+{
+	int i, j;
+
+	for (i = 0; i < matrixToNullify->rowCount; i++)
+	{
+		for (j = 0; j < matrixToNullify->columnCount; j++)
+		{
+			matrixToNullify->data[i][j] = 0;
+		}
+	}
+}
+
+void fSaveMatrixToFile(const Matrix * matrixToWrite, const char columnSeparator, const char rowSeparator, char * filename)
+{
+	FILE* fp;
+	int i, j;
+	fp = fopen(filename, "w+");
+	for (i = 0; i < matrixToWrite->rowCount; i++)
+	{
+		for (j = 0; j < matrixToWrite->columnCount; j++)
+		{
+			if (matrixToWrite->columnCount - 1 == j)
+			{
+				fprintf(fp, "%g", matrixToWrite->data[i][j]);
+			}
+			else
+			{
+				fprintf(fp, "%g%c", matrixToWrite->data[i][j], columnSeparator);
+			}
+		}
+		if ((matrixToWrite->rowCount - 1) > i)
+		{
+			fprintf(fp, "%c", rowSeparator);
+		}
+	}
+	fclose(fp);
 }

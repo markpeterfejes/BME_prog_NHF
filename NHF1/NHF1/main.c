@@ -7,7 +7,9 @@
 void clearConsole();
 void showMenu(void);
 void addNewMatrix(void);
+void multiplyMatrix(void);
 void addMatrix(void);
+void printMatrixToFile(void);
 void listMatrices(void);
 void freeProgramMemory();
 
@@ -48,7 +50,7 @@ void showMenu(void)
 		printf("2. Add two matrices\n");
 		printf("3. Multiply two matrices\n");
 		printf("4. Currently added matrices\n");
-		printf("5. Help\n");
+		printf("5. Save matrix to file\n");
 		printf("6. Exit\n");
 		printf("Select an option by entering it's number: ");
 		scanf("%d%*c", &option);
@@ -64,7 +66,7 @@ void showMenu(void)
 			break;
 		case 3:
 			clearConsole();
-			//multiplyMatrices();
+			multiplyMatrix();
 			break;
 		case 4:
 			clearConsole();
@@ -72,10 +74,11 @@ void showMenu(void)
 			break;
 		case 5:
 			clearConsole();
-			//help();
+			printMatrixToFile();
 			break;
 		case 6:
 			return;
+			break;
 		default:
 			printf("\nInvalid menu option!\n");
 			break;
@@ -157,6 +160,7 @@ void addMatrix(void)
 {
 	int i;
 	int tag1, tag2;
+	char newName[51];
 	if (openMatrixCount <= 0)
 	{
 		printf("No open matrices found. Add some! Enter 0 to go back to the menu\n");
@@ -183,14 +187,100 @@ void addMatrix(void)
 
 	if (tag1 > 0 && tag1 <= openMatrixCount && tag2 > 0 && tag2 <= openMatrixCount)
 	{
-		openMatrices[openMatrixCount] = addMatrices(openMatrices[tag1 - 1], openMatrices[tag2 - 1]);
+		snprintf(newName, 51 * (sizeof(char)), "%s + %s", openMatrices[tag1 - 1]->name, openMatrices[tag2 - 1]->name);
+
+		openMatrices[openMatrixCount] = addMatrices(openMatrices[tag1 - 1], openMatrices[tag2 - 1], newName);
 		if (openMatrices[openMatrixCount] == NULL)
 		{
 			printf("\n It would be good if the matrices would be the same sizes...\n");
+			scanf("%*c");
 			return;
 		}
 		openMatrixCount++;
 		printf("\nIt can be found in the menu!\n");
 		scanf("%*c");
+	}
+}
+
+void multiplyMatrix(void)
+{
+	int i;
+	int tag1, tag2;
+	char newName[51];
+	if (openMatrixCount <= 0)
+	{
+		printf("No open matrices found. Add some! Enter 0 to go back to the menu\n");
+		scanf("%*c");
+		return;
+	}
+	if (openMatrixCount >= MAX_MATRICES)
+	{
+		printf("Too many open matrices. Please restart the program.\n");
+		scanf("%*c");
+		return;
+	}
+
+	for (i = 0; i < openMatrixCount; i++)
+	{
+		printf("%d. %s: Rowcount: %d Columncount: %d\n", i + 1, openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+	}
+
+	printf("Select Two matrices to multiply, by entering their numbers\n");
+	printf("First one: ");
+	scanf("%d%*c", &tag1);
+	printf("Second one: ");
+	scanf("%d%*c", &tag2);
+
+	if (tag1 > 0 && tag1 <= openMatrixCount && tag2 > 0 && tag2 <= openMatrixCount)
+	{
+		snprintf(newName, 51 * (sizeof(char)), "%s * %s", openMatrices[tag1 - 1]->name, openMatrices[tag2 - 1]->name);
+
+		openMatrices[openMatrixCount] = multiplyMatrices(openMatrices[tag1 - 1], openMatrices[tag2 - 1], newName);
+		if (openMatrices[openMatrixCount] == NULL)
+		{
+			printf("\n Matrix1's columncount must be the same as matrix2's rowcount!");
+			scanf("%*c");
+			return;
+		}
+		openMatrixCount++;
+		printf("\nIt can be found in the menu!\n");
+		scanf("%*c");
+	}
+}
+
+void printMatrixToFile(void)
+{
+	int i;
+	int option,fileType;
+	char columnsep, rowsep;
+	char fileName[101];
+
+	if (openMatrixCount == 0)
+	{
+		printf("No open matrices found. Add some! Enter 0 to go back to the menu\n");
+		getchar();
+		return;
+	}
+	while (1)
+	{
+		for (i = 0; i < openMatrixCount; i++)
+		{
+			printf("%d. %s: Columncount: %d Rowcount: %d\n", i + 1, openMatrices[i]->name, openMatrices[i]->columnCount, openMatrices[i]->rowCount);
+		}
+		printf("\nSelect a matrix you want to print, by entering it's number, or any other number to go back to the menu: ");
+		scanf("%d%*c", &option);
+		if (option > 0 && option <= openMatrixCount)
+		{
+			printf("\nEnter file name(with extension max 100 characters): ");
+			scanf("%s%*c", &fileName);
+			printf("\nEnter a row separator character: ");
+			scanf("%c%*c", &rowsep);
+			printf("\nEnter a column separator character: ");
+			scanf("%c%*c", &columnsep);
+			fSaveMatrixToFile(openMatrices[option - 1], columnsep, rowsep, fileName);
+			scanf("%*c");
+			continue;
+		}
+		break;
 	}
 }

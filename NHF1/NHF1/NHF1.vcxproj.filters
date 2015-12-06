@@ -32,6 +32,9 @@
     <Text Include="mx2.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="mx3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h">
